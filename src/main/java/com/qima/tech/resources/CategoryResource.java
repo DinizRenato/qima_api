@@ -2,6 +2,7 @@ package com.qima.tech.resources;
 
 import com.qima.tech.dtos.category.CategoryDTO;
 import com.qima.tech.dtos.category.CreateCategoryDTO;
+import com.qima.tech.dtos.category.UpdateCategoryDTO;
 import com.qima.tech.services.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,6 +43,14 @@ public class CategoryResource {
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CreateCategoryDTO createCategory) {
         return ResponseEntity.ok(categoryService.save(createCategory));
     }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CategoryDTO> updateProduct(@PathVariable Long id, @RequestBody UpdateCategoryDTO dto) {
+        Optional<CategoryDTO> category = Optional.ofNullable(categoryService.update(id, dto));
+        return category.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
