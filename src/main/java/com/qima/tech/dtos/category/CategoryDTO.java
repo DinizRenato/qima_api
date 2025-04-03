@@ -1,6 +1,6 @@
 package com.qima.tech.dtos.category;
 
-import com.qima.tech.dtos.ProductDTO;
+import com.qima.tech.dtos.product.ProductDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

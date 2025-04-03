@@ -1,7 +1,7 @@
 package com.qima.tech.resources;
 
 import com.qima.tech.dtos.product.CreateProductDTO;
-import com.qima.tech.dtos.ProductDTO;
+import com.qima.tech.dtos.product.ProductDTO;
 import com.qima.tech.dtos.product.UpdateProductDTO;
 import com.qima.tech.services.ProductService;
 import org.springframework.http.ResponseEntity;
