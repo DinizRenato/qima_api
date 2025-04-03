@@ -32,7 +32,7 @@ public class AuthResource {
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String token = jwtTokenProvider.generateToken(userDetails.getUsername());
+        String token = jwtTokenProvider.generateToken(userDetails);
         return ResponseEntity.ok(Collections.singletonMap("token", token));
     }
 
