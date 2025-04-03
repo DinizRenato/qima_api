@@ -1,7 +1,7 @@
 package com.qima.tech.services;
 
 import com.qima.tech.dtos.product.CreateProductDTO;
-import com.qima.tech.dtos.ProductDTO;
+import com.qima.tech.dtos.product.ProductDTO;
 import com.qima.tech.dtos.product.UpdateProductDTO;
 import com.qima.tech.entities.Category;
 import com.qima.tech.entities.Product;
