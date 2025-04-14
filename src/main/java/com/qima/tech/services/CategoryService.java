@@ -5,7 +5,7 @@ import com.qima.tech.dtos.category.CreateCategoryDTO;
 import com.qima.tech.dtos.category.UpdateCategoryDTO;
 import com.qima.tech.entities.Category;
 import com.qima.tech.repositories.CategoryRepository;
-import jakarta.transaction.Transactional;
+import com.qima.tech.repositories.CategorySubCategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +15,11 @@ import java.util.Optional;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategorySubCategoryRepository categorySubCategoryRepository;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, CategorySubCategoryRepository categorySubCategoryRepository) {
         this.categoryRepository = categoryRepository;
+        this.categorySubCategoryRepository = categorySubCategoryRepository;
     }
 
     public List<CategoryDTO> findAll() {
@@ -46,6 +48,7 @@ public class CategoryService {
     }
 
     public void deleteById(Long id) {
+        categorySubCategoryRepository.deleteByCategoryId(id);
         categoryRepository.deleteById(id);
     }
 

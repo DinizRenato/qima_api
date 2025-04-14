@@ -1,6 +1,7 @@
 package com.qima.tech.dtos.product;
 
 import com.qima.tech.dtos.category.CategoryDTO;
+import com.qima.tech.dtos.subcategory.SubCategoryDTO;
 import com.qima.tech.entities.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class ProductDTO {
     private BigDecimal price;
     private Boolean available;
     private CategoryDTO category;
+    private SubCategoryDTO subCategory;
 
     public static ProductDTO fromEntity(Product product) {
         return new ProductDTO(
@@ -27,7 +29,9 @@ public class ProductDTO {
                 product.getDescription(),
                 product.getPrice(),
                 product.getAvailable(),
-                new CategoryDTO(product.getCategory().getId(), product.getCategory().getName())
+                new CategoryDTO(product.getCategory().getId(), product.getCategory().getName()),
+                product.getSubCategory() != null ?
+                new SubCategoryDTO(product.getSubCategory().getId(), product.getSubCategory().getName()) : null
         );
     }
 }

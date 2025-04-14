@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "categories")
@@ -27,6 +29,14 @@ public class Category {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "category_subcategory",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "subcategory_id")
+    )
+    private Set<SubCategory> subCategories = new HashSet<>();
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Product> products;

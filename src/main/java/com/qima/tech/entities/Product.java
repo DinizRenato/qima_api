@@ -30,6 +30,10 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name = "subcategory_id", nullable = true)
+    private SubCategory subCategory;
+
     @Column(nullable = false)
     private Boolean available;
 }

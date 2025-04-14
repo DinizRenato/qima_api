@@ -18,5 +18,6 @@ public class UpdateProductDTO {
     private BigDecimal price;
     private Boolean available;
     private Long categoryId;
+    private Long subCategoryId;
 }
 

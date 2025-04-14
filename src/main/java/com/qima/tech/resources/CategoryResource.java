@@ -46,7 +46,7 @@ public class CategoryResource {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CategoryDTO> updateProduct(@PathVariable Long id, @RequestBody UpdateCategoryDTO dto) {
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody UpdateCategoryDTO dto) {
         Optional<CategoryDTO> category = Optional.ofNullable(categoryService.update(id, dto));
         return category.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }

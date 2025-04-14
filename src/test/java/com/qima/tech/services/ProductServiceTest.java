@@ -5,6 +5,7 @@ import com.qima.tech.dtos.product.UpdateProductDTO;
 import com.qima.tech.entities.Category;
 import com.qima.tech.entities.Product;
 import com.qima.tech.exceptions.CategoryNotFoundException;
+import com.qima.tech.exceptions.ProductNotFoundException;
 import com.qima.tech.repositories.CategoryRepository;
 import com.qima.tech.repositories.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,12 +40,12 @@ class ProductServiceTest {
         MockitoAnnotations.openMocks(this);
 
         category = new Category(1L, "Electronics");
-        product = new Product(1L, "Laptop", "A powerful laptop", new BigDecimal("1500.00"), category, true);
+        product = new Product(1L, "Laptop", "A powerful laptop", new BigDecimal("1500.00"), category, null, true);
     }
 
     @Test
     void createProduct_ShouldReturnProductDTO_WhenValidDataIsProvided() {
-        CreateProductDTO dto = new CreateProductDTO("Laptop", "A powerful laptop", new BigDecimal("1500.00"), true, 1L);
+        CreateProductDTO dto = new CreateProductDTO("Laptop", "A powerful laptop", new BigDecimal("1500.00"), true, 1L, null);
 
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(productRepository.save(any(Product.class))).thenReturn(product);
@@ -62,7 +63,7 @@ class ProductServiceTest {
 
     @Test
     void createProduct_ShouldThrowException_WhenCategoryNotFound() {
-        CreateProductDTO dto = new CreateProductDTO("Laptop", "A powerful laptop", new BigDecimal("1500.00"), true, 2L);
+        CreateProductDTO dto = new CreateProductDTO("Laptop", "A powerful laptop", new BigDecimal("1500.00"), true, 2L, null);
 
         when(categoryRepository.findById(2L)).thenReturn(Optional.empty());
 
@@ -102,7 +103,7 @@ class ProductServiceTest {
 
     @Test
     void updateProduct_ShouldReturnUpdatedProductDTO_WhenProductExists() {
-        UpdateProductDTO dto = new UpdateProductDTO("Updated Laptop", "Updated description", new BigDecimal("1600.00"), true, 1L);
+        UpdateProductDTO dto = new UpdateProductDTO("Updated Laptop", "Updated description", new BigDecimal("1600.00"), true, 1L, null);
 
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
@@ -110,23 +111,25 @@ class ProductServiceTest {
 
         var result = productService.updateProduct(1L, dto);
 
-        assertTrue(result.isPresent());
-        assertEquals(dto.getName(), result.get().getName());
-        assertEquals(dto.getDescription(), result.get().getDescription());
-        assertEquals(dto.getPrice(), result.get().getPrice());
+        assertEquals(dto.getName(), result.getName());
+        assertEquals(dto.getDescription(), result.getDescription());
+        assertEquals(dto.getPrice(), result.getPrice());
         verify(productRepository, times(1)).save(any(Product.class));
     }
 
     @Test
     void updateProduct_ShouldReturnEmpty_WhenProductDoesNotExist() {
-        UpdateProductDTO dto = new UpdateProductDTO("Updated Laptop", "Updated description", new BigDecimal("1600.00"), true, 1L);
+        UpdateProductDTO dto = new UpdateProductDTO("Updated Laptop", "Updated description", new BigDecimal("1600.00"), true, 1L, null);
 
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(productRepository.findById(1L)).thenReturn(Optional.empty());
 
-        var result = productService.updateProduct(1L, dto);
+        Exception exception = assertThrows(ProductNotFoundException.class, () -> {
+            productService.updateProduct(1L, dto);
+        });
 
-        assertTrue(result.isEmpty());
+        assertEquals("Product ID 1 not found.", exception.getMessage());
+
     }
 
     @Test

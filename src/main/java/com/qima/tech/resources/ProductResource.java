@@ -43,7 +43,7 @@ public class ProductResource {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody UpdateProductDTO dto) {
-        Optional<ProductDTO> updatedProduct = productService.updateProduct(id, dto);
+        Optional<ProductDTO> updatedProduct = Optional.ofNullable(productService.updateProduct(id, dto));
         return updatedProduct.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
